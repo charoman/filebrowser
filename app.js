@@ -6,7 +6,7 @@ var menu = [
     'Create file or folder',
     'Delete file or folder',
     'Search in file or folder',
-    'Quit Program'
+    'Quit Program',
 ];
 
 /* this will be the storage for our file system */
