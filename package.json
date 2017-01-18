@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --debug-brk app.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/charoman/filebrowser/issues"
   },
-  "homepage": "https://github.com/charoman/filebrowser#readme"
+  "homepage": "https://github.com/charoman/filebrowser#readme",
+  "dependencies": {
+    "readline-sync": "^1.4.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
 }
