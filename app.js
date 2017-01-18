@@ -9,6 +9,9 @@ var menu = [
     'Quit Program'
 ];
 
+/* this will be the storage for our file system */
+var fsStorage = [];
+
 main();
 
 function main() {
