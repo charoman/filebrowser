@@ -10,7 +10,18 @@ var menu = [
 ];
 
 /* this will be the storage for our file system */
-var fsStorage = [];
+var fsStorage = [
+    [0, 0, 'root'],
+    [1, 0, 'subfolder1'],
+    [2, 0, 'subfolder1'],
+    [3, 0, 'subfolder1'],
+    [4, 1, 'subfolder1'],
+    [5, 4, 'subfolder1'],
+    [6, 5, 'file1', 'content'],
+    [7, 5, 'file2', 'content']
+];
+
+var currentFolder = 0;
 
 main();
 
