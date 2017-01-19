@@ -9,14 +9,29 @@ var menu = [
     'Quit Program'
 ];
 
+/*
+root
+    subfolder1
+    file1
+    file2
+
+change folder, subfolder1
+
+subfolder1
+    subfolder2
+    file1
+    file2
+*/
+
+
 /* this will be the storage for our file system */
 var fsStorage = [
     [0, 0, 'root'],
     [1, 0, 'subfolder1'],
-    [2, 0, 'subfolder1'],
-    [3, 0, 'subfolder1'],
-    [4, 1, 'subfolder1'],
-    [5, 4, 'subfolder1'],
+    [2, 0, 'subfolder2'],
+    [3, 0, 'subfolder3'],
+    [4, 1, 'subfolder4'],
+    [5, 4, 'subfolder5'],
     [6, 5, 'file1', 'content'],
     [7, 5, 'file2', 'content']
 ];
