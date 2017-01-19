@@ -1,3 +1,41 @@
+/*
+==== Print current folder example ===
+output:
+root
+    subfolder1
+    file1
+    file2
+
+==== Change folder example ===
+input: Change folder to: [ ".." - goes to parent | folder-name ]
+output: 
+current-folder
+    file1
+    file2
+
+==== Create file folder example ===
+input: Type file/folder name: [ name ]
+input: Write your content: [ content | empty - if empty creates folder else file ]
+
+output if folder:
+current-folder
+    the-new-folder
+
+output if file:
+current-folder
+    the-new-file
+
+==== Delete file folder example ===
+input: Type file/folder name: [ name ]
+input: Are you sure?
+output: Done Message
+
+==== Open file ====
+input: Type file name: [ name ]
+output: 
+** The File Content **
+*/
+
 var readlineSync = require('readline-sync');
 var exit = false;
 var menu = [
@@ -5,27 +43,13 @@ var menu = [
     'Change current folder',
     'Create file or folder',
     'Delete file or folder',
-    'Search in file or folder',
+    'Open file',
     'Quit Program'
 ];
 
-/*
-root
-    subfolder1
-    file1
-    file2
-
-change folder, subfolder1
-
-subfolder1
-    subfolder2
-    file1
-    file2
-*/
-
-
 /* this will be the storage for our file system */
 var fsStorage = [
+    /* [id, parentId, name, content==null] */
     [0, 0, 'root'],
     [1, 0, 'subfolder1'],
     [2, 0, 'subfolder2'],
@@ -48,13 +72,13 @@ function main() {
 }
 
 function printMenu() {
-    var answer = readlineSync.keyInSelect(menu, 'Please make your choise:');
+    var answer = readlineSync.keyInSelect(menu, 'Please make your choice:');
     switch (answer) {
         case 0: printCurrentFolder(); break;
         case 1: changeCurrentFolder(); break;
         case 2: createFileOrFolder(); break;
         case 3: deleteFileOrFolder(); break;
-        case 4: searchInFileOrFolder(); break;
+        case 4: openFile(); break;
         case 5: quitProgram(); break;
     }
 }
@@ -79,8 +103,8 @@ function deleteFileOrFolder() {
     /* todo: implement deletion of file/folder from file system array   */
 }
 
-function searchInFileOrFolder() {
-    console.log('searching current files folder');
+function openFile() {
+    console.log('opening file');
     /* todo: implement search across all folders by name and content  */
 }
 
