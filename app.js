@@ -9,17 +9,20 @@ var menu = [
     'Open file',
     'Quit Program'
 ];
+
 var fsStorage = [
     {
-        id: 0, name: 'root',
-        children: [
+        id: 0, name: 'root', children: [
             {
-                id: 1, name: 'sub1', children: [
+                id: 1, name: 'sub1', children:
+                [
                     { id: 4, name: 'file1.txt' },
                 ]
             },
-            { id: 2, name: 'sub2', children: [] },
-            { id: 3, name: 'file1.txt' },
+            { id: 2, name: 'sub2', children: [
+                
+            ] },
+            { id: 3, name: 'file1.txt', content: 'text' },
         ]
     }
 ];
