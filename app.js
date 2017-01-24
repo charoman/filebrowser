@@ -1,43 +1,6 @@
-/*
-==== Print current folder example ===
-output:
-root
-    subfolder1
-    file1
-    file2
-
-==== Change folder example ===
-input: Change folder to: [ ".." - goes to parent | folder-name ]
-output: 
-current-folder
-    file1
-    file2
-
-==== Create file folder example ===
-input: Type file/folder name: [ name ]
-input: Write your content: [ content | empty - if empty creates folder else file ]
-
-output if folder:
-current-folder
-    the-new-folder
-
-output if file:
-current-folder
-    the-new-file
-
-==== Delete file folder example ===
-input: Type file/folder name: [ name ]
-input: Are you sure?
-output: Done Message
-
-==== Open file ====
-input: Type file name: [ name ]
-output: 
-** The File Content **
-*/
-
 var readlineSync = require('readline-sync');
-var exit = false;
+var currentFolder = 0;
+var lastId = 0;
 var menu = [
     'Print current folder',
     'Change current folder',
@@ -46,35 +9,32 @@ var menu = [
     'Open file',
     'Quit Program'
 ];
-
-/* this will be the storage for our file system */
 var fsStorage = [
-    /* [id, parentId, name, content==null] */
-    [0, 0, 'root'],
-    [1, 0, 'subfolder1'],
-    [2, 0, 'subfolder2'],
-    [3, 0, 'subfolder3'],
-    [4, 1, 'subfolder4'],
-    [5, 4, 'subfolder5'],
-    [6, 5, 'file1', 'content'],
-    [7, 5, 'file2', 'content']
+    {
+        id: 0, name: 'root',
+        children: [
+            {
+                id: 1, name: 'sub1', children: [
+                    { id: 4, name: 'file1.txt' },
+                ]
+            },
+            { id: 2, name: 'sub2', children: [] },
+            { id: 3, name: 'file1.txt' },
+        ]
+    }
 ];
 
-var currentFolder = 0;
-
-main();
-
-function main() {
-    while (!exit) {
+(function () {
+    printCurrentFolder(currentFolder);
+    while (true) {
         printMenu();
     }
-    process.exit(0);
-}
+})();
 
 function printMenu() {
     var answer = readlineSync.keyInSelect(menu, 'Please make your choice:');
     switch (answer) {
-        case 0: printCurrentFolder(); break;
+        case 0: printCurrentFolder(currentFolder); break;
         case 1: changeCurrentFolder(); break;
         case 2: createFileOrFolder(); break;
         case 3: deleteFileOrFolder(); break;
@@ -83,14 +43,63 @@ function printMenu() {
     }
 }
 
-function printCurrentFolder() {
-    console.log('printing current folder');
-    /* todo: implement hierarcial folder and file printing at current folder  */
+function printCurrentFolder(folderId) {
+    folder = getCurrentFolder(folderId);
+    console.log(folder.name);
+    folder.children.forEach(function (subitem) {
+        console.log(' ' + subitem.name);
+    });
+}
+
+function getCurrentFolder(folderId, items) {
+    items = items || fsStorage;
+    for (var i in items) {
+        if (items[i].id == folderId) {
+            return items[i];
+        }
+    }
+    for (var i in items) {
+        var folder = getCurrentFolder(folderId, items[i].children);
+        if (folder) {
+            return folder;
+        }
+    }
+}
+
+function getFolderParent(folderId, items, parent) {
+    items = items || fsStorage;
+    for (var i in items) {
+        if (items[i].id == folderId) {
+            return parent || items[i];
+        }
+    }
+    for (var i in items) {
+        var folder = getFolderParent(folderId, items[i].children, items[i]);
+        if (folder) {
+            return folder;
+        }
+    }
 }
 
 function changeCurrentFolder() {
-    console.log('changing current folder');
-    /* todo: implement cli to move in all directions  */
+    folderName = readlineSync.question('Enter folder name:');
+    var folder = null;
+    if (folderName == '..') {
+        folder = getFolderParent(currentFolder);
+        currentFolder = folder.id;
+        printCurrentFolder(currentFolder);
+    }
+    else {
+        folder = getCurrentFolder(currentFolder);
+        for (var f in folder.children) {
+            if (folder.children[f].name == folderName) {
+                currentFolder = folder.children[f].id;
+                printCurrentFolder(currentFolder);
+                return;
+            }
+        }
+        console.log('Folder is not exists');
+    }
 }
 
 function createFileOrFolder() {
@@ -110,5 +119,6 @@ function openFile() {
 
 function quitProgram() {
     var answer = readlineSync.keyInYNStrict('Are you sure?');
-    exit = answer ? true : false;
+    if (answer)
+        process.exit(0);
 }
